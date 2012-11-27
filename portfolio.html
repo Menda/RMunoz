@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rafa Muñoz</title>
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="static/css/style.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Armata" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Flamenco" rel="stylesheet" />
+    <link href="static/css/jquery.fancybox.css" rel="stylesheet" media="screen" />
+    <link href="static/img/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+</head>
+<body>
+    <div id="wrap" class="clearfix">
+        <div id="menu">
+            <div id="menu-sprite" class="sprite-3"></div>
+            <nav role="select">
+                <select>
+                    <option value="index.html">01. Home</option>
+                    <option value="articles.html">02. Articles</option>
+                    <option value="portfolio.html" selected="selected">03. Portfolio</option>
+                    <option value="about-me.html">04. About me</option>
+                </select>
+            </nav>
+            <nav role="navigation">
+                <ul id="menu-list">
+                    <li><a href="index.html" rel="home">01. Home</a></li>
+                    <li><a href="articles.html">02. Articles</a></li>
+                    <li><a href="portfolio.html" class="active">03. Portfolio</a></li>
+                    <li><a href="about-me.html">04. About me</a></li>
+                </ul>
+            </nav>
+            <h1><a href="/" rel="home">Rafa Muñoz</a></h1>
+        </div>
+        <div id="content">
+			<div>
+				<div id="circle"><div>03.</div></div>
+	            <section id="s-03">
+	                <h1>Portfolio</h1>
+	                <hr />
+					<article>
+						<h2>Deseo</h2>
+                        <p>Shoes, bags and complements webshop in Czech Republic.</p>
+                        <div class="table clearfix">
+                            <ul class="screeshots">
+                                <li>
+                                    <a class="fancybox" data-fancybox="true" rel="deseo" href="static/img/portfolio/deseo/s1.png">
+                                        <img src="static/img/portfolio/deseo/s1-crop.png" alt="" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="fancybox" data-fancybox="true" rel="deseo" href="static/img/portfolio/deseo/s2.png">
+                                        <img src="static/img/portfolio/deseo/s2-crop.png" alt="" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="fancybox" data-fancybox="true" rel="deseo" href="static/img/portfolio/deseo/s3.png">
+                                        <img src="static/img/portfolio/deseo/s3-crop.png" alt="" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <p>
+                            <strong>URL:</strong> <a href="http://deseo.cz">http://deseo.cz</a><br />
+                            <strong>Technologies:</strong> Prestashop (PHP, MySQL, CSS).
+                        </p>
+					</article>
+	            </section>
+	        </div>
+        </div>
+    </div>
+    <script data-main="static/js/main-portfolio" src="static/js/lib/require.js"></script>
+</body>
+</html>

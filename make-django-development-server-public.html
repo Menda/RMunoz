@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debian 6 (Squeeze) on Macbook Pro 7,1 - Rafa Muñoz</title>
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="static/css/style.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Armata" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Flamenco" rel="stylesheet" />
+    <link href="static/img/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+</head>
+<body>
+    <div id="wrap">
+        <div id="menu">
+            <div id="menu-sprite" class="sprite-2"></div>
+            <nav role="select">
+                <select onchange="if (this.value) window.location.href = this.value;">
+                    <option value="index.html">01. Home</option>
+                    <option value="articles.html" selected="selected">02. Articles</option>
+                    <option value="portfolio.html">03. Portfolio</option>
+                    <option value="about-me.html">04. About me</option>
+                </select>
+            </nav>
+            <nav role="navigation">
+                <ul id="menu-list">
+                    <li><a href="index.html" rel="home">01. Home</a></li>
+                    <li><a href="articles.html" class="active">02. Articles</a></li>
+                    <li><a href="portfolio.html">03. Portfolio</a></li>
+                    <li><a href="about-me.html">04. About me</a></li>
+                </ul>
+            </nav>
+            <h1><a href="/" rel="home">Rafa Muñoz</a></h1>
+        </div>
+        <div id="content">
+			<div>
+            <article>
+                <h1>Make Django development server public</h1>
+				<span id="published">Published on <time datetime="2011-04-02">2 April 2011</time></span>
+                <hr />
+				<p>
+                    Some months ago I was developing a Django application for my company.
+                    A week later my boss wanted me to show him the results. Unfortunatelly,
+                    he wasn't in the same city, so he had to access to my django web apps remotelly.
+                </p>
+                <p>
+                    First, you have to know your local IP (inet addr). Use the terminal to get it if you wish.
+                </p>
+				<div class="terminal">
+					<div class="header">
+						<div class="top-left"></div>
+						<div class="top-right"></div>
+						<div class="title">TERMINAL</div>
+					</div>
+<pre>
+$ ifconfig | grep 192.168
+<span>inet addr:192.168.1.3  Bcast:192.168.1.255  Mask:255.255.255.0</span>
+</pre>
+                </div>
+                <p>
+                    Now open your router administration. In my case the URL is <i>http://192.168.1.1</i>. Then
+                    go to Port forwarding, or any other section in which you can redirect the router ports to any
+                    other port of any computer connected to the local network. As you can see, I'm redirecting
+                    all petitions to port 8000 to my computer private IP port 8000.
+                </p>
+                
+                <a href="static/img/articles/linksys.png"><img class="pic" src="static/img/articles/linksys_thumb.png" /></a>
+                
+                <p>
+                    Run Django dev server. If you don't type the 0.0.0.0:8000 and type instead <em>python manage.py
+                    runserver</em> <strong>the server won't be visible outside your computer</strong>:
+                </p>
+				<div class="terminal">
+					<div class="header">
+						<div class="top-left"></div>
+						<div class="top-right"></div>
+						<div class="title">TERMINAL</div>
+					</div>
+<pre>
+$ python manage.py runserver 0.0.0.0:8000
+<span>Validating models...
+0 errors found
+
+Django version 1.2.3, using settings 'ocproject.settings'
+Development server is running at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.</span>
+</pre>
+                </div>
+
+                <p>
+                    Open other terminal window and get your public IP:
+                </p>
+				<div class="terminal">
+					<div class="header">
+						<div class="top-left"></div>
+						<div class="top-right"></div>
+						<div class="title">TERMINAL</div>
+					</div>
+<pre>
+$ wget -q www.whatismyip.com/automation/n09230945.asp && cat n09230945.asp && rm -f n09230945.asp
+<span>218.218.128.9</span>
+</pre>
+                </div>
+                <p>
+                    Now open your browser with URL <i>http://218.218.128.9:8000</i> and that's all!
+                </p>
+
+			    <footer>
+	<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a><br />All articles are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+	<br />Todos los artículos están bajo una <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.es">Licencia Creative Commons Atribución 3.0 Unported</a>.
+			    </footer>
+            </article>
+			</div>
+        </div>
+    </div>
+</body>
+</html>

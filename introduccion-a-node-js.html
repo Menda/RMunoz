@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introducción a Node.js - Rafa Muñoz</title>
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="static/css/style.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Armata" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Flamenco" rel="stylesheet" />
+	<link rel="stylesheet" href="static/css/highlight.css">
+    <link href="static/img/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+</head>
+<body>
+    <div id="wrap">
+        <div id="menu">
+            <div id="menu-sprite" class="sprite-2"></div>
+            <nav role="select">
+                <select onchange="if (this.value) window.location.href = this.value;">
+                    <option value="index.html">01. Home</option>
+                    <option value="articles.html" selected="selected">02. Articles</option>
+                    <option value="portfolio.html">03. Portfolio</option>
+                    <option value="about-me.html">04. About me</option>
+                </select>
+            </nav>
+            <nav role="navigation">
+                <ul id="menu-list">
+                    <li><a href="index.html" rel="home">01. Home</a></li>
+                    <li><a href="articles.html" class="active">02. Articles</a></li>
+                    <li><a href="portfolio.html">03. Portfolio</a></li>
+                    <li><a href="about-me.html">04. About me</a></li>
+                </ul>
+            </nav>
+            <h1><a href="/" rel="home">Rafa Muñoz</a></h1>
+        </div>
+        <div id="content">
+			<div>
+            <article>
+                <h1>Introducción a Node.js</h1>
+				<span id="published">Published on <time datetime="2011-05-01">1 Mayo 2011</time></span>
+                <hr />
+
+				<h2>¿Qué es Node.js?</h2>
+				<p>Node.js (de ahora en adelante Node) es un entorno JavaScript de lado de servidor que utiliza un modelo asíncrono y dirigido por eventos.</p>
+				<p>Node usa el motor de JavaScript <a href="http://code.google.com/p/v8/">V8</a> de Google: una VM tremendamente rápida y de gran calidad escrita por gente como Lars Bak, uno de los mejores ingenieros del mundo especializados en VMs. No olvidemos que V8 es actualizado constantemente y es uno de los intérpretes más rápidos que puedan existir en la actualidad para cualquier lenguaje dinámico. Además las capacidades de Node para I/O (Entrada/Salida) son realmente ligeras y potentes, dando al desarrollador la posibilidad de utilizar a tope la I/O del sistema.</p>
+				<p>Node soporta protocolos TCP, DNS y HTTP.</p>
+                <a href="http://nodejs.org/" class="pic"><img class="pic" alt="Página de Node.js" title="Página de Node.js" src="static/img/articles/nodejs.png" width="420" /></a>
+
+				<h2>¿Qué diferencias tiene respecto a Apache u otros servidores web?</h2>
+				<p>
+	Apache crea un nuevo hilo por cada conexión cliente-servidor. Esto funciona bien para pocas conexiones, pero crear nuevos hilos es algo costoso, así como los cambios de contexto. Como vemos en la siguiente gráfica, a partir de 400 conexiones simultáneas, el número de segundos para atender las peticiones crece considerablemente. Podemos decir que Apache funciona bien pero no es el mejor servidor para lograr máxima concurrencia (tener el número mayor de conexiones abiertas posibles).
+				</p>
+                <img src="static/img/articles/apache-benchmark.png" class="pic" />
+				<p>
+	Uno de los puntos fuertes de Node es su capacidad de mantener muchas conexiones abiertas y esperando. En Apache por ejemplo el parámetro MaxClients por defecto es 256. Este valor puede ser aumentado para servir contenido estático, sin embargo si se sirven aplicaciones web dinámicas en PHP u otro lenguaje es probable que al poner un valor alto el servidor se quede bloqueado ante muchas conexiones -esto dependerá del trabajo que la aplicación web de al servidor y de su capacidad hardware-.
+				</p>
+				<p>
+	Una aplicación para Node se programa sobre un solo hilo. Si en la aplicación existe una operación bloqueante (I/O por ejemplo), Node creará entonces otro hilo en segundo plano, pero no lo hará sistemáticamente por cada conexión como haría Apache. En teoría Node puede mantener tantas conexiones como número máximo de archivos descriptores (sockets) soportados por el sistema. En un sistema UNIX este límite puede rondar por las 65.000 conexiones, un número muy alto. Sin embargo en la realidad la cifra depende de muchos factores, como la cantidad de información que esté la aplicación distribuyendo a los clientes. Una aplicación con actividad normal podría mantener 20-25.000 clientes a la vez sin haber apenas retardo en las respuestas.
+				</p>
+
+                <p>
+	Un inconveniente de Node es que debido a su arquitectura de usar sólo un hilo también que sólo puede usar una CPU.
+	Un método para usar múltiples núcleos sería iniciar múltiples instancias de Node en el servidor y poner un balanceador de carga delante de ellos.
+                </p>
+                
+                
+                  <h2>¿Es el único en su especie?</h2>
+                    <p>
+                        ¡No! Hay Otros proyectos como <a href="http://www.tornadoweb.org/">Tornado</a> (Python), <a href="http://twistedmatrix.com/">Twisted</a> (Python), <a href="http://rubyeventmachine.com/">EventMachine</a> (Ruby), <a href="http://scalestack.org/">Scale Stack</a> (C++), <a href="http://mina.apache.org/">Apache MINA</a> (Java) o <a href="http://jetty.codehaus.org/jetty/">Jetty</a> (Java).
+                    </p>
+                    <p>
+                        El lenguaje de <a href="http://es.wikipedia.org/wiki/Programaci%C3%B3n_funcional">programación funcional</a> <a href="http://www.erlang.org/">Erlang</a> también puede ser una buena alternativa. El único inconveniente es que la curva de aprendizaje es mayor respecto el uso de un lenguaje ya conocido sobre los proyectos mencionados arriba. Erlang ha sido diseñado para crear sistemas en tiempo real con alta escalabilidad y alta disponibilidad. Se usa entre otras cosas en telecomunicaciones, bancos, comercio electrónico o mensajería instantánea.
+                    </p>
+                    
+                    
+                    
+                <h2>Que sí, ¡pero quiero ver código!</h2>
+                <p>
+	Para que os hagáis la idea de cómo es un programa escrito para Node, veamos el ejemplo típico (<span class="hl">hello_world.js</span>):
+                </p>
+	<pre>
+    <code class="javascript">var http = require('http');
+var s = http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello World\n');
+});
+s.listen(8000);
+console.log('Server running!');</code>
+</pre>
+                <p class="big-space">
+	Ahora iniciamos la aplicación:
+                </p>
+    <div class="terminal">
+    	<div class="header">
+    		<div class="top-left"></div>
+    		<div class="top-right"></div>
+    		<div class="title">TERMINAL</div>
+    	</div>
+    <pre>
+$ node hello_world.js
+<span>Server running!</span></pre>
+    </div>
+    			<p>
+	Cuando iniciamos la aplicación, Node le dice al sistema que le avise (mediante epoll, kqueue, etc.) cuando un cliente se conecte. Mientras tanto se pondrá a dormir (sleep). Si alguien se conecta, se ejecuta el callback anónimo definido en createServer. Por cada conexión se realiza una pequeña reserva de memoria en un <a href="http://es.wikipedia.org/wiki/Mont%C3%ADculo_(inform%C3%A1tica)">heap</a>.
+				</p>
+                <p>
+	Si abrimos <span class="hl">http://localhost:8000/</span> en el navegador entonces obtenemos "Hello World".
+				</p>
+
+                
+                
+                <h2>"Nunca esperes, nunca duermas, funciona siempre"</h2>
+                <p>
+                Desde que empezamos a programar nos enseñaron a hacerlo de forma secuencial. Es decir:
+                </p>
+            	<pre>
+                <code class="javascript">doSomething1();
+doSomething2();
+doSomething3();</code>
+                </pre>
+                <p>
+                Hasta que no termina 1 no empieza 2, y así sucesivamente con la siguiente instrucción.
+                Veamos otro ejemplo:
+                            </p>
+                        	<pre>
+                            <code class="javascript">var result = db.query("select..");
+useResult(result);
+otherTask();</code>
+                            </pre>
+                
+                <p>
+                Aquí no se ejecutará <span class="hl">useResult</span> hasta que no termine la consulta, es decir, que la primera línea bloquea el resto del proceso.
+                De igual modo hasta que no termine <span class="hl">useResult</span> no podrá ejecutar <span class="hl">otherTask</span>. Ahora veamos el siguiente código:
+                    </p>
+                    <pre>
+                    <code class="javascript">db.query("select..", function (result) {
+    useResult(result);
+});
+otherTask();</code>
+                    </pre>
+                    <p>
+                Aquí la consulta no bloqueará el proceso entero, sino que se creará un hilo de fondo para <span class="hl">db.query</span> y cuando termine se ejecutará su callback asociado.
+                    </p>
+                    <p>
+                Así es en realidad como se tendría que hacer las operaciones de I/O, sin embargo no se hace así porque es mucho más
+                difícil y porque muchos lenguajes no facilitan este tipo de programación -no tienen closures o funciones anónimas por ejemplo-. Para la mayoría de los programadores el uso de hilos, candados (locks) y memoria compartida se convierte en una gran pesadilla. A esto podemos añadirle que muchas librerías actuales tampoco soportan peticiones asíncronas (como libmysql-client). Estos son los factores por los que tradicionalmente se ha enseñado a estructurar secuencialmente los programas.
+                </p>
+                <p>
+                JavaScript es muy buen lenguaje para programar asíncronamente, ya que fue diseñado especialmente para ser usado en programación orientada a eventos. Esto le hace especialmente atractivo para realizar aplicaciones no bloqueantes y de alta concurrencia.
+                </p>
+                <p>
+                Otro ejemplo:
+                </p>
+                <pre>
+                <code class="javascript">var fs = require('fs');
+
+fs.readFile('report.txt', function(data) {
+    console.log('Read: ' + data);
+});
+
+fs.writeFile('message.txt', 'Hello World!', function() {
+    console.log('File saved!');
+});</code>
+                </pre>
+<p>
+                A Node se le dará la función de leer y escribir en los ficheros y a continuación pasará a dormir (sleep). Cuando las operaciones se terminen se ejecutarán los callbacks asociados a cada tarea. Como explicamos anteriormente, no hay nada que garantice el orden en el que van a ser mostrados los mensajes de los callbacks. Esta manera de ejecutar la I/O asegura que el hilo principal de programa siempre va a estar en continuo movimiento llamando nuevas tareas para realizar en segundo plano.
+  </p>              
+                
+                <h2>¿Cuándo usarlo?</h2>
+                <p>Node es especialmente bueno en aplicaciones web que necesiten una conexión persistente con el navegador del cliente.
+                Mediante una serie de técnicas llamadas <a href="http://en.wikipedia.org/wiki/Comet_(programming)">Comet</a>, puedes hacer una aplicación que envíe datos al usuario en tiempo real; es decir, que el navegador mantenga la conexión siempre abierta y reciba continuamente nuevos datos cuando los haya. Para servidores y aplicaciones clásicas que no estén preparadas para mantener muchas conexiones, la forma más sencilla es solicitar desde el navegador un cada X segundos nueva información (polling). Si tenemos muchos usuarios a la vez abriendo conexiones y haciendo peticiones a la BD nos encontramos con que nuestro servidor no da más de sí y deja de atender peticiones -acaba petando, vamos-. Un ejemplo de polling clásico es la <a href="http://www.meneame.net/sneak.php">fisgona de Menéame</a> que realiza peticiones mediante AJAX a un script PHP que devuelve nuevos datos en JSON cada 3 segundos y actualiza la tabla de novedades.</p>
+
+                <img src="static/img/articles/ajax-vs-comet.png" class="pic" alt="Comparativa AJAX con métodos Comet" title="Comparativa AJAX con métodos Comet" />
+<p>
+                Una lista de aplicaciones para las que Node encajaría perfectamente:
+</p>
+<ul>
+                <li>Juegos online.</li>
+                <li>Gestores de correo online: de esta manera teniendo el navegador abierto podríamos ver notificaciones en tiempo real de nuevos correos recibidos.</li>
+                <li>Herramientas de colaboración.</li>
+                <li>Chats.</li>
+                <li>Redes sociales: por ejemplo para actualizar automáticamente tu muro de novedades.</li>
+                <li>Herramientas de traducción en tiempo real.</li>
+</ul>
+                
+                
+                
+                <h2>¿Cuándo no usarlo?</h2>
+                <p>Node tiene muchas ventajas, pero como en todo no hay herramientas ni peores ni mejores, sino unas que se ajustan mejor a unos casos de uso que otras.</p>
+<ul>
+    <li>¿Son importantes tiempos de respuesta bajos y alta concurrencia?</li>
+    <li>¿El número de usuarios activos va a ser considerable?</li>
+    <li>¿El proyecto es pequeño? Si es grande, ¿se disponen de las librerías/drivers de DB necesarias para trabajar desde JavaScript?</li>
+</ul>
+<p>
+                Si en dichas preguntas has respondido sí, entonces Node se adapta perfectamente como solución a tus problemas. Si has respondido no a alguna pregunta entonces posiblemente Node no sea la mejor solución para ese software.
+                </p>
+                
+                
+                <h2>Librerías interesantes</h2>
+                <ul class="after-h2">
+                <li><a href="http://socket.io/">Socket.IO</a>: "Socket.IO aims to make realtime apps possible in every browser and mobile device, blurring the differences between the different transport mechanisms. Under the hoods, Socket.IO will use feature detection to decide if the connection will be established with WebSocket, AJAX long polling, etc (see supported transports), making creating realtime apps that work everywhere a snap."</li>
+                <li><a href="http://expressjs.com/">Express</a>: un framework web sobre Node. <a href="http://www.daniweb.com/web-development/javascript-dhtml-ajax/reviews/349689">Manual Daniweb</a>, <a href="http://www.giantflyingsaucer.com/blog/?p=1311">getting started</a>.</li>
+                <li><a href="https://github.com/Guille/node.dbslayer.js">node.dbslayer.js</a>: "it's a very basic and easy-to-use library to connect to a DBSlayer server, which effectively provides non-blocking and scalable MySQL support for Node."</li>
+                <li><a href="http://handlebars.strobeapp.com/">Handlebars.js</a>: "provides the power necessary to let you build semantic templates effectively with no frustration." <a href="http://thinkvitamin.com/code/getting-started-with-handlebars-js/">Buen manual de Think Vitamin</a>.</li>
+                <li><a href="https://github.com/christkv/node-mongodb-native">MongoDB driver</a> o <a href="https://github.com/ciaranj/mongoose">Mongoose</a>.</li>
+                </ul>
+                
+                <h2>Referencias</h2>
+                <ul class="after-h2">
+                    <li><a href="http://nodejs.org/">http://nodejs.org/</a></li>
+                    <li><a href="http://debuggable.com/posts/understanding-node-js:4bd98440-45e4-4a9a-8ef7-0f7ecbdd56cb">http://debuggable.com/posts/understanding-node-js:4bd98440-45e4-4a9a-8ef7-0f7ecbdd56cb</a></li>
+                    <li><a href="http://www.slideshare.net/amix3k/comet-with-nodejs-and-v8">http://www.slideshare.net/amix3k/comet-with-nodejs-and-v8</a></li>
+                    <li><a href="http://nodejs.org/jsconf.pdf">http://nodejs.org/jsconf.pdf</a></li>
+                    <li><a href="http://code.google.com/p/node-js-vs-apache-php-benchmark/wiki/Tests">http://code.google.com/p/node-js-vs-apache-php-benchmark/wiki/Tests</a></li>
+                    <li><a href="http://www.quora.com/Whats-the-difference-between-an-event-loop-and-a-per-request-model">http://www.quora.com/Whats-the-difference-between-an-event-loop-and-a-per-request-model</a></li>
+                    <li><a href="http://www.stoimen.com/blog/2010/11/16/diving-into-node-js-introduction-and-installation/">http://www.stoimen.com/blog/2010/11/16/diving-into-node-js-introduction-and-installation/</a></li>
+                    <li><a href="http://www.stoimen.com/blog/2010/12/02/diving-into-node-js-a-long-polling-example/">http://www.stoimen.com/blog/2010/12/02/diving-into-node-js-a-long-polling-example/</a></li>
+                    <li><a href="http://stackoverflow.com/questions/3011317/node-js-or-erlang">http://stackoverflow.com/questions/3011317/node-js-or-erlang</a></li>
+                    <li><a href="http://www.erlang.org/">http://www.erlang.org/</a></li>
+                    <li><a href="http://stackoverflow.com/questions/3878096/nodejs-nodejs-org-experience-comments">http://stackoverflow.com/questions/3878096/nodejs-nodejs-org-experience-comments</a></li>
+                    <li><a href="http://www.olympum.com/future/nodes-and-jetties/">http://www.olympum.com/future/nodes-and-jetties/</a></li>
+                    <li><a href="http://stackoverflow.com/questions/5062614/how-to-decide-when-to-use-nodejs">http://stackoverflow.com/questions/5062614/how-to-decide-when-to-use-nodejs</a></li>
+                </ul>
+                
+                
+                <h2>Recursos adicionales</h2>
+                <ul class="after-h2">
+                    <li><a href="http://www.youtube.com/watch?v=F6k8lTrAE2g">http://www.youtube.com/watch?v=F6k8lTrAE2g</a></li>
+                    <li><a href="http://britg.com/2009/07/01/server-side-javascript-continued-node-js-plus-example/">http://britg.com/2009/07/01/server-side-javascript-continued-node-js-plus-example/</a></li>
+                    <li><a href="http://howtonode.org/express-mongodb">http://howtonode.org/express-mongodb</a></li>
+                    <li><a href="http://dailyjs.com/2010/11/01/node-tutorial/">http://dailyjs.com/2010/11/01/node-tutorial/</a></li>
+                    <li><a href="http://www.kegel.com/c10k.html">http://www.kegel.com/c10k.html</a></li>
+                    <li><a href="http://howtonode.org/websockets-socketio">http://howtonode.org/websockets-socketio</a></li>
+                    <li><a href="http://net.tutsplus.com/tutorials/javascript-ajax/start-using-html5-websockets-today/">http://net.tutsplus.com/tutorials/javascript-ajax/start-using-html5-websockets-today/</a></li>
+                </ul>
+                
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'rmunoz'; // required: replace example with your forum shortname
+
+                    // The following are highly recommended additional parameters. Remove the slashes in front to use.
+                    var disqus_identifier = 'rmunoz_2';
+                    var disqus_url = 'http://www.rmunoz.net/introduccion-a-node-js.html';
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+			    <footer>
+	<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a><br />All articles are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+	<br />Todos los artículos están bajo una <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.es">Licencia Creative Commons Atribución 3.0 Unported</a>.
+			    </footer>
+            </article>
+			</div>
+        </div>
+    </div>
+
+	<script src="http://yandex.st/highlightjs/5.16/highlight.min.js"></script>
+	<script>
+		 hljs.initHighlightingOnLoad();
+	</script>
+</body>
+</html>

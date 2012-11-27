@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rafa Muñoz</title>
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="static/css/style.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Armata" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Flamenco" rel="stylesheet" />
+    <link href="static/css/jquery.fancybox.css" rel="stylesheet" media="screen" />
+    <link href="static/img/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+</head>
+<body>
+    <div id="wrap">
+        <div id="menu">
+            <div id="menu-sprite" class="sprite-2"></div>
+            <nav role="select">
+                <select>
+                    <option value="index.html">01. Home</option>
+                    <option value="articles.html" selected="selected">02. Articles</option>
+                    <option value="portfolio.html">03. Portfolio</option>
+                    <option value="about-me.html">04. About me</option>
+                </select>
+            </nav>
+            <nav role="navigation">
+                <ul id="menu-list">
+                    <li><a href="index.html" rel="home">01. Home</a></li>
+                    <li><a href="articles.html" class="active">02. Articles</a></li>
+                    <li><a href="portfolio.html">03. Portfolio</a></li>
+                    <li><a href="about-me.html">04. About me</a></li>
+                </ul>
+            </nav>
+            <h1><a href="/" rel="home">Rafa Muñoz</a></h1>
+        </div>
+        <div id="content">
+			<div>
+				<div id="circle"><div>02.</div></div>
+	            <section id="s-02">
+					<h1>Articles</h1>
+					<hr />
+					<h2>GNU/Linux</h2>
+					<ul>
+						<li><a href="debian-6-squeeze-on-macbook-pro-7-1.html">Debian 6 (Squeeze) on Macbook Pro 7,1</a></li>
+					</ul>
+					<h2>Django</h2>
+					<ul>
+					    <li><a href="make-django-development-server-public.html">Make Django development server public</a></li>
+					</ul>
+					<h2>Node.js</h2>
+					<ul>
+					    <li><a href="introduccion-a-node-js.html">Introducción a Node.js</a></li>
+					</ul>
+				
+					<footer>
+						<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a><br />All articles are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+						<br />Todos los artículos están bajo una <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.es">Licencia Creative Commons Atribución 3.0 Unported</a>.
+					</footer>
+	            </section>
+			</div>
+        </div>
+    </div>
+    <script data-main="static/js/main-articles" src="static/js/lib/require.js"></script>
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debian 6 (Squeeze) on Macbook Pro 7,1 - Rafa Muñoz</title>
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="static/css/style.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Armata" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Flamenco" rel="stylesheet" />
+    <link href="static/img/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+</head>
+<body>
+    <div id="wrap">
+        <div id="menu">
+            <div id="menu-sprite" class="sprite-2"></div>
+            <nav role="select">
+                <select onchange="if (this.value) window.location.href = this.value;">
+                    <option value="index.html">01. Home</option>
+                    <option value="articles.html" selected="selected">02. Articles</option>
+                    <option value="portfolio.html">03. Portfolio</option>
+                    <option value="about-me.html">04. About me</option>
+                </select>
+            </nav>
+            <nav role="navigation">
+                <ul id="menu-list">
+                    <li><a href="index.html" rel="home">01. Home</a></li>
+                    <li><a href="articles.html" class="active">02. Articles</a></li>
+                    <li><a href="portfolio.html">03. Portfolio</a></li>
+                    <li><a href="about-me.html">04. About me</a></li>
+                </ul>
+            </nav>
+            <h1><a href="/" rel="home">Rafa Muñoz</a></h1>
+        </div>
+        <div id="content">
+			<div>
+            <article>
+                <h1>Debian 6 (Squeeze) on Macbook Pro 7,1</h1>
+				<span id="published">Published on <time datetime="2011-04-02">2 April 2011</time></span>
+                <hr />
+
+				<h2>Introduction</h2>
+				<p>When I bought my Macbook Pro on January 2011 I decided to install Ubuntu 10.04 on it. After a month I replaced its hard drive with an SSD. Wow! The performance now it's superb when opening programs and doing IO tasks. Sadly I couldn't install Ubuntu 10.04 on this computer with the new hard drive. I tried several times but the X didn't start and I was getting other strange errors which I couldn't solve. That's why I tried to install Debian on it... and I made it!</p>
+                <a href="static/img/articles/macbook.jpg"><img class="pic" src="static/img/articles/macbook_thumb.jpg" /></a>
+                <p>
+First, make sure you own the 7,1 Macbook Pro model. If you don't own it I don't recommend you to follow this guide.
+To get the version in OS X, click on the Apple on the top left, then<br /><i>About this Mac</i> &gt; <i>More Info...</i> and see the generation in the <i>Model Identifier</i> row.</p>
+
+<p>To get the version in GNU/Linux:</p>
+				<div class="terminal">
+					<div class="header">
+						<div class="top-left"></div>
+						<div class="top-right"></div>
+						<div class="title">TERMINAL</div>
+					</div>
+<pre>
+# dmidecode -s system-product-name
+<span>MacBookPro7,1</span>
+</pre>
+				</div>
+                <p>
+                <a href="http://tkj.freeshell.org/debian/debian-on-macbook-pro-7.1/">This blog</a> comments that it's not possible to install
+                this Debian version due to a bug in the CD-ROM. However it was possible for me to do so.
+                </p>
+
+				<h2>Installation</h2>
+<p>
+Follow the installation proccess normally. I formatted my root partition to ext3. I haven't tested ext4 but it should work good too.
+When you reach the step of installing grub, do not install it at /dev/sda. You have to install it in the same partition where Debian is installed, so please, take note of the root name of your Debian partition. For example I had to install Grub in /dev/sda4, but remember that your partition root may be different.
+</p>
+<p>
+When the installation finished and the computer has rebooted, in the Refit menu go to "Start Partitioning Tool" and say yes to the resynchronization question. Then shutdown, boot the computer up and select the Tux penguin.
+</p>
+
+
+
+<h2>Shutdown &amp; Reboot</h2>
+
+<p>
+The system shutdowns or reboots after 3 minutes. A bug?
+</p>
+
+<h2>Keyboard</h2>
+
+<p>
+In order to use 3rd level keys like Alt + Key, you have to go to:<br />
+<i>Preferences</i> &gt; <i>Keyboard</i> &gt; <i>Key to choose 3rd level</i>
+</p>
+
+<h2>Sound</h2>
+
+<p>
+It works out of the box, and the microphone as well, however Skype doesn't get any sound from the microphone.
+</p>
+
+<h3>Microphone (Skype)</h3>
+
+<p>
+The tricky part I've found is to install Pulseaudio. It seems that Skype doesn't get along with ALSA. The issue is that the mic records only on the right channel by default and skype catches only the left channel.
+</p>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+# apt-get install libasound2-plugins pulseaudio paman padevchooser paprefs
+pavucontrol pavumeter
+</pre>
+</div>
+
+<p>/etc/asound.conf:</p>
+<div class="code">
+<pre>pcm.pulse {
+    type pulse
+}
+ctl.pulse {
+    type pulse
+} 
+pcm.!default {
+    type pulse
+}
+ctl.!default {
+    type pulse
+}
+</pre>
+</div>
+
+<p>
+Then run paman, open <i>Devices</i> tab, select alsa_input.pci source, click <i>Properties</i> and change microphone volume. I'm using value 300%. If you are using Skype, don't forget to turn off automatic volume adjusting in Skype deselecting:<br />
+<i>Options</i> &gt; <i>Sound Devices</i> &gt; <i>Allow Skype to automatically adjust my mixer levels</i>
+</p>
+
+
+<h2>Pommed</h2>
+
+<p>
+If you push the button to turn up/down the volume and every step is too big, you can change it in pommed config.
+</p>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+# apt-get install pommed
+</pre>
+</div>
+
+<p>
+Go to /etc/pommed.conf and edit audio:
+</p>
+<div class="code">
+<pre>
+# step value (1 - 50%)
+step = 1
+# beep on volume change
+beep = no
+# mixer element for volume adjustment
+volume = "Master"
+</pre>
+</div>
+
+<p>
+Turn up volume of <i>Front speaker</i>.
+</p>
+
+<h2>Screen backlight</h2>
+
+<p>
+	There are 2 ways of making screen backlight work with keyboard F1 and F2 keys depending on your software configuration.
+</p>
+
+<h3>Nouveau drivers</h3>
+<p>If you are using the default driver (Nouveau), you just have to install pommed:</p>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+# apt-get install pommed
+</pre>
+</div>
+
+<h3>NVidia drivers</h3>
+<p>
+If you are using the NVidia driver, then you must install the <a href="https://launchpad.net/~mactel-support/+archive/ppa/+packages">NVidia backlight support</a>. Although it's a deb package for Ubuntu, it perfectly works in Debian:
+</p>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+$ cd /tmp
+$ wget -c https://launchpad.net/~mactel-support/+archive/ppa/+files/mbp-nvidia-bl-dkms_0.25.4~lucid_all.deb
+# apt-get install dkms
+# dpkg -i mbp-nvidia-bl-dkms_0.25.4~lucid_all.deb
+</pre>
+</div>
+
+<p>
+Your keys should work properly. However keyboard light doesn't work as good as expected.
+</p>
+
+<p>
+	To make it work you have 2 options:
+	<ul>
+		<li>Install my own compiled version of pommed for x86.</li>
+		<li>Download pommed source, get this file and this file and place them in <i>pommed/pommed</i> replacing the old ones.<br />To finish, compile it and install it as normal and reboot.</li>
+	</ul>
+</p>
+
+<h2>Graphics</h2>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+# apt-get install module-assistant nvidia-kernel-common
+# m-a auto-install nvidia-kernel${VERSION}-source
+# apt-get install nvidia-glx${VERSION}
+
+# apt-get install nvidia-xconfig
+# nvidia-xconfig
+</pre>
+</div>
+
+
+<p>If this fails:</p>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+# /etc/init.d/gdm3 restart
+<span>(Go to tty1 using Alt+F1, login and then do)</span>
+# reboot
+</pre>
+</div>
+
+<p>
+After rebooting, if the X are loaded properly and you get the following output, then it's properly working.
+</p>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+$ glxinfo | grep -i nvidia
+<span>server glx vendor string: NVIDIA Corporation
+client glx vendor string: NVIDIA Corporation
+OpenGL vendor string: NVIDIA Corporation
+OpenGL version string: 3.2.0 NVIDIA 195.36.31
+OpenGL shading language version string: 1.50 NVIDIA via Cg compiler</span>
+</pre>
+</div>
+
+<h2>Wireless</h2>
+
+<p>
+Wired network works properly, however we need to make some extra work to make wifi working.	
+</p>
+
+<p>
+First, check what model does the MBP have:
+</p>
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+# lspci | grep -E "Atheros|Broadcom"
+<span>02:00.0 Network controller: Broadcom Corporation BCM4322 802.11a/b/g/n Wireless LAN Controller (rev 01)
+03:00.0 Ethernet controller: Broadcom Corporation NetXtreme BCM5764M Gigabit Ethernet PCIe (rev 10)</span>
+</pre>
+</div>
+
+<p>
+Add a "non-free" component to /etc/apt/sources.list:
+</p>
+
+<div class="code">
+<pre>
+# Debian Squeeze (testing)
+deb http://ftp.es.debian.org/debian/ squeeze main contrib non-free 
+deb-src http://ftp.es.debian.org/debian/ squeeze main contrib non-free
+</pre>
+</div>
+
+<p>Update the list of available packages. Install the module-assistant and wireless-tools packages:</p>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+# apt-get update
+# apt-get install module-assistant wireless-tools
+</pre>
+</div>
+
+<p>
+Command by command:
+
+	<ol>
+		<li>Build and install a broadcom-sta-modules-* package for your system, using Module-Assistant</li>
+		<li>Blacklist the brcm80211 module, to prevent it conflicting for support of BCM4313, BCM43224 and BCM43225 devices</li>
+		<li>Rebuild your initial ramdisk, to blacklist modules defined at /etc/modprobe.d/broadcom-sta-common.conf within initramfs</li>
+		<li>Unload conflicting modules</li>
+		<li>Load the wl module</li>
+	</ol>
+</p>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+# m-a a-i broadcom-sta
+# echo blacklist brcm80211 >> /etc/modprobe.d/broadcom-sta-common.conf
+# update-initramfs -u -k $(uname -r)
+# modprobe -r b44 b43 b43legacy ssb brcm80211
+# modprobe wl
+</pre>
+</div>
+
+<p>
+Now Wifi should work :)
+</p>
+
+<h2>Webcam</h2>
+
+<p>
+The iSight works out of the box.
+</p>
+
+<h2>Touchpad</h2>
+
+<p>
+Works. Side vertical scrolling is enabled by default, but two-finger scrolling and horizontal scrolling can be enabled through the mouse preferences. Single click works as expected (tap or press); right click is a tap or press with two fingers, and middle click (paste) is a tap or press with three fingers, and click and drag is a click and slide.
+</p>
+
+<p>
+On <i>mouse preferences</i>, disabling the touchpad while typing on the keyboard is a good idea.
+</p>
+
+<h2>Suspend/Hibernate</h2>
+
+<p>
+Hibernate and suspend don't work.
+</p>
+
+<h2>Sensors</h2>
+
+<p>
+The module coretemp need to be loaded during the boot, so add it at the end of /etc/modules:
+</p>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+# echo "coretemp" >> /etc/modules
+</pre>
+</div>
+
+<h2>HFS</h2>
+
+<p>
+	By default, Debian can read your Mac partition data, however it's not possible to write data on it. Go on with the following instructions to make this partition writable.
+</p>
+<p>
+In Mac OS, disable journaling to allow writes from Debian. In my case my volume is called "Mac".
+</p>
+
+<div class="terminal mac">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+$ sudo /usr/sbin/diskutil disableJournal /Volumes/Mac
+</pre>
+</div>
+
+<p>
+Install some packages and try to mount the Mac OS partition (mine is sda2):
+</p>
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+# apt-get install hfsutils hfsplus
+# mkdir /media/Mac
+# mount -t hfsplus /dev/sda2 /media/Mac
+</pre>
+</div>
+
+If it works good, get the uuid of that partition running:
+
+<div class="terminal">
+	<div class="header">
+		<div class="top-left"></div>
+		<div class="top-right"></div>
+		<div class="title">TERMINAL</div>
+	</div>
+<pre>
+$ ls -l /dev/disk/by-uuid/
+<span>lrwxrwxrwx 1 root root 10 ene 31 10:00 f6f53b6f-6828-33c4-98ad-1ad94883895e -> ../../sda2</span>
+</pre>
+</div>
+
+<p>
+Add to /etc/fstab something like this, but replacing my values with your UUID got in last command:
+</p>
+
+<div class="code">
+<pre>
+UUID=f6f53b6f-6828-33c4-98ad-1ad94883895e /media/Mac hfsplus rw,exec,auto,users 0 0
+</pre>
+</div>
+
+<h2>FireWire</h2>
+<p>Can't test it. Write me an email if you made it work.</p>
+
+<h2>CardReader</h2>
+<p>Works out of the box.</p>
+
+<h2>Apple Remote Control</h2>
+<p>Can't test it. Write me an email if you made it work and how.</p>
+
+<h2>External Monitor</h2>
+
+<p>Can't test it. Write me an email if you made it work and how.</p>
+
+<h2>Bluetooth</h2>
+
+<p>Works out of the box.</p>
+                
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'rmunoz'; // required: replace example with your forum shortname
+
+                    // The following are highly recommended additional parameters. Remove the slashes in front to use.
+                    var disqus_identifier = 'rmunoz_1';
+                    var disqus_url = 'http://www.rmunoz.net/debian-6-squeeze-on-macbook-pro-7-1.html';
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+			    <footer>
+	<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a><br />All articles are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+	<br />Todos los artículos están bajo una <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.es">Licencia Creative Commons Atribución 3.0 Unported</a>.
+			    </footer>
+            </article>
+			</div>
+        </div>
+    </div>
+</body>
+</html>
